@@ -1,1181 +1,154 @@
 {
   "stages": [
     {
-      "bonusQuestion": {
-        "question": "Who built the Ark?",
-        "options": [
-          "Moses",
-          "Noah",
-          "David",
-          "Abraham"
-        ],
-        "correctAnswer": "Noah"
-      },
+      "bonusQuestions": [
+        {
+          "question": "Who built the Ark?",
+          "options": [
+            "Moses",
+            "Noah",
+            "David",
+            "Abraham"
+          ],
+          "correctAnswer": "Noah"
+        },
+        {
+          "question": "How many days did it rain?",
+          "options": [
+            "7",
+            "30",
+            "40",
+            "100"
+          ],
+          "correctAnswer": "40"
+        },
+        {
+          "question": "Which bird brought an olive leaf?",
+          "options": [
+            "Crow",
+            "Dove",
+            "Eagle",
+            "Sparrow"
+          ],
+          "correctAnswer": "Dove"
+        },
+        {
+          "question": "What sign did God place in the sky? ",
+          "options": [
+            "Rainbow",
+            "Moon",
+            "Star",
+            "Cloud"
+          ],
+          "correctAnswer": "Rainbow"
+        },
+        {
+          "question": "How many people were on the Ark?",
+          "options": [
+            "6",
+            "7",
+            "8",
+            "10"
+          ],
+          "correctAnswer": "8"
+        },
+        {
+          "question": "Who shut the Ark door?",
+          "options": [
+            "Noah",
+            "God",
+            "Ham",
+            "Shem"
+          ],
+          "correctAnswer": "God"
+        },
+        {
+          "question": "Where did the Ark rest?",
+          "options": [
+            "Sinai",
+            "Ararat",
+            "Carmel",
+            "Zion"
+          ],
+          "correctAnswer": "Ararat"
+        },
+        {
+          "question": "What covered the earth?",
+          "options": [
+            "Flood",
+            "Fire",
+            "Snow",
+            "Wind"
+          ],
+          "correctAnswer": "Flood"
+        },
+        {
+          "question": "Noah was a righteous...?",
+          "options": [
+            "King",
+            "Priest",
+            "Man",
+            "Judge"
+          ],
+          "correctAnswer": "Man"
+        },
+        {
+          "question": "What did Noah build?",
+          "options": [
+            "Temple",
+            "Ark",
+            "Tower",
+            "Palace"
+          ],
+          "correctAnswer": "Ark"
+        }
+      ],
       "puzzles": [
         {
           "letters": [
-            "N",
-            "O",
             "A",
-            "H",
             "R",
-            "K"
+            "K",
+            "W",
+            "O",
+            "D"
           ],
           "answers": [
-            "NOAH",
             "ARK",
-            "ROAN"
+            "ROW",
+            "WORD",
+            "DARK"
           ]
         },
         {
           "letters": [
-            "N",
-            "O",
-            "A",
-            "H",
             "R",
-            "K"
-          ],
-          "answers": [
-            "NOAH",
-            "ARK",
-            "ROAN"
-          ]
-        },
-        {
-          "letters": [
-            "N",
-            "O",
-            "A",
-            "H",
-            "R",
-            "K"
-          ],
-          "answers": [
-            "NOAH",
-            "ARK",
-            "ROAN"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who defeated Goliath?",
-        "options": [
-          "David",
-          "Saul",
-          "Samuel",
-          "Solomon"
-        ],
-        "correctAnswer": "David"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "D",
-            "A",
-            "V",
-            "I",
-            "D",
-            "S"
-          ],
-          "answers": [
-            "DAVID",
-            "AID",
-            "VIA"
-          ]
-        },
-        {
-          "letters": [
-            "D",
-            "A",
-            "V",
-            "I",
-            "D",
-            "S"
-          ],
-          "answers": [
-            "DAVID",
-            "AID",
-            "VIA"
-          ]
-        },
-        {
-          "letters": [
-            "D",
-            "A",
-            "V",
-            "I",
-            "D",
-            "S"
-          ],
-          "answers": [
-            "DAVID",
-            "AID",
-            "VIA"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who led the Israelites out of Egypt?",
-        "options": [
-          "Moses",
-          "Aaron",
-          "Joshua",
-          "Noah"
-        ],
-        "correctAnswer": "Moses"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "M",
-            "O",
-            "S",
-            "E",
-            "S",
-            "A"
-          ],
-          "answers": [
-            "MOSES",
-            "SEA",
-            "SAME"
-          ]
-        },
-        {
-          "letters": [
-            "M",
-            "O",
-            "S",
-            "E",
-            "S",
-            "A"
-          ],
-          "answers": [
-            "MOSES",
-            "SEA",
-            "SAME"
-          ]
-        },
-        {
-          "letters": [
-            "M",
-            "O",
-            "S",
-            "E",
-            "S",
-            "A"
-          ],
-          "answers": [
-            "MOSES",
-            "SEA",
-            "SAME"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was swallowed by a great fish?",
-        "options": [
-          "Jonah",
-          "Peter",
-          "Paul",
-          "Elijah"
-        ],
-        "correctAnswer": "Jonah"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "O",
-            "N",
-            "A",
-            "H",
-            "L"
-          ],
-          "answers": [
-            "JONAH",
-            "HALO",
-            "LOAN"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "N",
-            "A",
-            "H",
-            "L"
-          ],
-          "answers": [
-            "JONAH",
-            "HALO",
-            "LOAN"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "N",
-            "A",
-            "H",
-            "L"
-          ],
-          "answers": [
-            "JONAH",
-            "HALO",
-            "LOAN"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was the first man?",
-        "options": [
-          "Adam",
-          "Noah",
-          "Cain",
-          "Abel"
-        ],
-        "correctAnswer": "Adam"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "A",
-            "D",
-            "A",
-            "M",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "ADAM",
-            "MADE",
-            "MEAD"
-          ]
-        },
-        {
-          "letters": [
-            "A",
-            "D",
-            "A",
-            "M",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "ADAM",
-            "MADE",
-            "MEAD"
-          ]
-        },
-        {
-          "letters": [
-            "A",
-            "D",
-            "A",
-            "M",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "ADAM",
-            "MADE",
-            "MEAD"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was the first woman?",
-        "options": [
-          "Sarah",
-          "Mary",
-          "Eve",
-          "Ruth"
-        ],
-        "correctAnswer": "Eve"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "E",
-            "V",
-            "E",
-            "L",
-            "A",
-            "D"
-          ],
-          "answers": [
-            "EVE",
-            "LEAD",
-            "VALE"
-          ]
-        },
-        {
-          "letters": [
-            "E",
-            "V",
-            "E",
-            "L",
-            "A",
-            "D"
-          ],
-          "answers": [
-            "EVE",
-            "LEAD",
-            "VALE"
-          ]
-        },
-        {
-          "letters": [
-            "E",
-            "V",
-            "E",
-            "L",
-            "A",
-            "D"
-          ],
-          "answers": [
-            "EVE",
-            "LEAD",
-            "VALE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who received the Ten Commandments?",
-        "options": [
-          "Moses",
-          "David",
-          "Jacob",
-          "Peter"
-        ],
-        "correctAnswer": "Moses"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "T",
-            "A",
-            "B",
-            "L",
-            "E",
-            "T"
-          ],
-          "answers": [
-            "TABLE",
-            "BLEAT",
-            "LATE"
-          ]
-        },
-        {
-          "letters": [
-            "T",
-            "A",
-            "B",
-            "L",
-            "E",
-            "T"
-          ],
-          "answers": [
-            "TABLE",
-            "BLEAT",
-            "LATE"
-          ]
-        },
-        {
-          "letters": [
-            "T",
-            "A",
-            "B",
-            "L",
-            "E",
-            "T"
-          ],
-          "answers": [
-            "TABLE",
-            "BLEAT",
-            "LATE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who built the temple?",
-        "options": [
-          "David",
-          "Solomon",
-          "Saul",
-          "Samuel"
-        ],
-        "correctAnswer": "Solomon"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "S",
-            "O",
-            "L",
-            "O",
-            "M",
-            "N"
-          ],
-          "answers": [
-            "SOLO",
-            "MOON",
-            "LOOM"
-          ]
-        },
-        {
-          "letters": [
-            "S",
-            "O",
-            "L",
-            "O",
-            "M",
-            "N"
-          ],
-          "answers": [
-            "SOLO",
-            "MOON",
-            "LOOM"
-          ]
-        },
-        {
-          "letters": [
-            "S",
-            "O",
-            "L",
-            "O",
-            "M",
-            "N"
-          ],
-          "answers": [
-            "SOLO",
-            "MOON",
-            "LOOM"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who baptized Jesus?",
-        "options": [
-          "Peter",
-          "John the Baptist",
-          "Paul",
-          "Andrew"
-        ],
-        "correctAnswer": "John the Baptist"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "O",
-            "H",
-            "N",
-            "B",
-            "T"
-          ],
-          "answers": [
-            "JOHN",
-            "BOTH",
-            "NOT"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "H",
-            "N",
-            "B",
-            "T"
-          ],
-          "answers": [
-            "JOHN",
-            "BOTH",
-            "NOT"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "H",
-            "N",
-            "B",
-            "T"
-          ],
-          "answers": [
-            "JOHN",
-            "BOTH",
-            "NOT"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who betrayed Jesus?",
-        "options": [
-          "Peter",
-          "Judas",
-          "Thomas",
-          "James"
-        ],
-        "correctAnswer": "Judas"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "U",
-            "D",
-            "A",
-            "S",
-            "T"
-          ],
-          "answers": [
-            "JUDAS",
-            "DUST",
-            "SAT"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "U",
-            "D",
-            "A",
-            "S",
-            "T"
-          ],
-          "answers": [
-            "JUDAS",
-            "DUST",
-            "SAT"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "U",
-            "D",
-            "A",
-            "S",
-            "T"
-          ],
-          "answers": [
-            "JUDAS",
-            "DUST",
-            "SAT"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who denied Jesus three times?",
-        "options": [
-          "Peter",
-          "John",
-          "Andrew",
-          "James"
-        ],
-        "correctAnswer": "Peter"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "P",
-            "E",
-            "T",
-            "E",
-            "R",
-            "S"
-          ],
-          "answers": [
-            "PETER",
-            "TREE",
-            "RESET"
-          ]
-        },
-        {
-          "letters": [
-            "P",
-            "E",
-            "T",
-            "E",
-            "R",
-            "S"
-          ],
-          "answers": [
-            "PETER",
-            "TREE",
-            "RESET"
-          ]
-        },
-        {
-          "letters": [
-            "P",
-            "E",
-            "T",
-            "E",
-            "R",
-            "S"
-          ],
-          "answers": [
-            "PETER",
-            "TREE",
-            "RESET"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who survived the lions' den?",
-        "options": [
-          "Daniel",
-          "Isaiah",
-          "Joseph",
-          "Elijah"
-        ],
-        "correctAnswer": "Daniel"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "D",
-            "A",
-            "N",
-            "I",
-            "E",
-            "L"
-          ],
-          "answers": [
-            "DANIEL",
-            "DEAL",
-            "LINE"
-          ]
-        },
-        {
-          "letters": [
-            "D",
-            "A",
-            "N",
-            "I",
-            "E",
-            "L"
-          ],
-          "answers": [
-            "DANIEL",
-            "DEAL",
-            "LINE"
-          ]
-        },
-        {
-          "letters": [
-            "D",
-            "A",
-            "N",
-            "I",
-            "E",
-            "L"
-          ],
-          "answers": [
-            "DANIEL",
-            "DEAL",
-            "LINE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who interpreted Pharaoh's dreams?",
-        "options": [
-          "Joseph",
-          "Moses",
-          "Aaron",
-          "Jacob"
-        ],
-        "correctAnswer": "Joseph"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "SHOE"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "SHOE"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "SHOE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who built the first altar after the flood?",
-        "options": [
-          "Noah",
-          "Abraham",
-          "Isaac",
-          "Jacob"
-        ],
-        "correctAnswer": "Noah"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "A",
-            "L",
-            "T",
-            "A",
-            "R",
-            "N"
-          ],
-          "answers": [
-            "ALTAR",
-            "RAT",
-            "TAR"
-          ]
-        },
-        {
-          "letters": [
-            "A",
-            "L",
-            "T",
-            "A",
-            "R",
-            "N"
-          ],
-          "answers": [
-            "ALTAR",
-            "RAT",
-            "TAR"
-          ]
-        },
-        {
-          "letters": [
-            "A",
-            "L",
-            "T",
-            "A",
-            "R",
-            "N"
-          ],
-          "answers": [
-            "ALTAR",
-            "RAT",
-            "TAR"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was the strongest man?",
-        "options": [
-          "Samson",
-          "David",
-          "Saul",
-          "Abel"
-        ],
-        "correctAnswer": "Samson"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "S",
-            "A",
-            "M",
-            "S",
-            "O",
-            "N"
-          ],
-          "answers": [
-            "SAMSON",
-            "MASS",
-            "SON"
-          ]
-        },
-        {
-          "letters": [
-            "S",
-            "A",
-            "M",
-            "S",
-            "O",
-            "N"
-          ],
-          "answers": [
-            "SAMSON",
-            "MASS",
-            "SON"
-          ]
-        },
-        {
-          "letters": [
-            "S",
-            "A",
-            "M",
-            "S",
-            "O",
-            "N"
-          ],
-          "answers": [
-            "SAMSON",
-            "MASS",
-            "SON"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who killed Abel?",
-        "options": [
-          "Cain",
-          "Seth",
-          "Noah",
-          "Jacob"
-        ],
-        "correctAnswer": "Cain"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "C",
             "A",
             "I",
             "N",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "CAIN",
-            "LACE",
-            "LINE"
-          ]
-        },
-        {
-          "letters": [
-            "C",
-            "A",
-            "I",
-            "N",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "CAIN",
-            "LACE",
-            "LINE"
-          ]
-        },
-        {
-          "letters": [
-            "C",
-            "A",
-            "I",
-            "N",
-            "L",
-            "E"
-          ],
-          "answers": [
-            "CAIN",
-            "LACE",
-            "LINE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who dreamed of a ladder to heaven?",
-        "options": [
-          "Jacob",
-          "Joseph",
-          "Isaac",
-          "Noah"
-        ],
-        "correctAnswer": "Jacob"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "A",
-            "C",
-            "O",
-            "B",
-            "L"
-          ],
-          "answers": [
-            "JACOB",
-            "COAL",
-            "CAB"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "A",
-            "C",
-            "O",
-            "B",
-            "L"
-          ],
-          "answers": [
-            "JACOB",
-            "COAL",
-            "CAB"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "A",
-            "C",
-            "O",
-            "B",
-            "L"
-          ],
-          "answers": [
-            "JACOB",
-            "COAL",
-            "CAB"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was Jesus' mother?",
-        "options": [
-          "Martha",
-          "Mary",
-          "Ruth",
-          "Sarah"
-        ],
-        "correctAnswer": "Mary"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "M",
-            "A",
-            "R",
-            "Y",
-            "L",
-            "D"
-          ],
-          "answers": [
-            "MARY",
-            "ARM",
-            "YARD"
-          ]
-        },
-        {
-          "letters": [
-            "M",
-            "A",
-            "R",
-            "Y",
-            "L",
-            "D"
-          ],
-          "answers": [
-            "MARY",
-            "ARM",
-            "YARD"
-          ]
-        },
-        {
-          "letters": [
-            "M",
-            "A",
-            "R",
-            "Y",
-            "L",
-            "D"
-          ],
-          "answers": [
-            "MARY",
-            "ARM",
-            "YARD"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who was Jesus' earthly father?",
-        "options": [
-          "Joseph",
-          "Peter",
-          "John",
-          "James"
-        ],
-        "correctAnswer": "Joseph"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "POSE"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "POSE"
-          ]
-        },
-        {
-          "letters": [
-            "J",
-            "O",
-            "S",
-            "E",
-            "P",
-            "H"
-          ],
-          "answers": [
-            "JOSEPH",
-            "HOPE",
-            "POSE"
-          ]
-        }
-      ]
-    },
-    {
-      "bonusQuestion": {
-        "question": "Who saw the burning bush?",
-        "options": [
-          "Moses",
-          "Aaron",
-          "Elijah",
-          "Isaiah"
-        ],
-        "correctAnswer": "Moses"
-      },
-      "puzzles": [
-        {
-          "letters": [
-            "B",
-            "U",
-            "S",
-            "H",
-            "M",
+            "W",
             "O"
           ],
           "answers": [
-            "BUSH",
-            "MUSH",
-            "SUM"
+            "RAIN",
+            "WARN",
+            "IRON",
+            "ROW"
           ]
         },
         {
           "letters": [
-            "B",
-            "U",
-            "S",
-            "H",
-            "M",
-            "O"
+            "F",
+            "L",
+            "O",
+            "O",
+            "D",
+            "N"
           ],
           "answers": [
-            "BUSH",
-            "MUSH",
-            "SUM"
-          ]
-        },
-        {
-          "letters": [
-            "B",
-            "U",
-            "S",
-            "H",
-            "M",
-            "O"
-          ],
-          "answers": [
-            "BUSH",
-            "MUSH",
-            "SUM"
+            "FLOOD",
+            "FOOD",
+            "FOLD"
           ]
         }
       ]

@@ -1,0 +1,29 @@
+{
+  "levels": [
+    {
+      "id": 1,
+      "letters": ["A","R","K","W","O","D"],
+      "answers": ["ARK","ROW","WORD","DARK"]
+    },
+    {
+      "id": 2,
+      "letters": ["R","A","I","N","W","O"],
+      "answers": ["RAIN","WARN","IRON","ROW"]
+    },
+    {
+      "id": 3,
+      "letters": ["F","L","O","O","D","N"],
+      "answers": ["FLOOD","FOOD","FOLD"]
+    },
+    {
+      "id": 4,
+      "letters": ["S","A","I","N","T","S"],
+      "answers": ["SAINTS","SATIN","STAIN"]
+    },
+    {
+      "id": 5,
+      "letters": ["P","R","A","Y","E","R"],
+      "answers": ["PRAYER","REPAY"]
+    }
+  ]
+}

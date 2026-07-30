@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 
+[DefaultExecutionOrder(-900)]
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
@@ -25,8 +26,11 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text puzzleCounterText;
 
-    private WordData wordData;
-    private PuzzleData currentPuzzle;
+    // private WordData wordData;
+    // private PuzzleData currentPuzzle;
+
+    private LevelsData levelsData;
+    private LevelData currentLevel;
 
     public bool IsDragging { get; private set; }
 
@@ -41,33 +45,74 @@ public class GameManager : MonoBehaviour
 
     private string currentWord = "";
 
-    private int currentStageIndex = 0;
-    private int currentPuzzleIndex = 0;
+    // private int currentStageIndex = 0;
+    // private int currentPuzzleIndex = 0;
 
     private void Awake()
     {
         Instance = this;
     }
 
+    private void InitializeCurrentLevel()
+    {
+        int level = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
+        Debug.Log($"[GameManager] Current level from PlayerPrefs: {level}", this);
+    }
+
+    private bool TryInitializeLevelData()
+    {
+        DataManager dataManager = DataManager.EnsureInstance();
+
+        if (dataManager == null)
+        {
+            Debug.LogError("[GameManager] DataManager could not be created or found.", this);
+            return false;
+        }
+
+        if (!dataManager.IsDataLoaded)
+        {
+            string reason = string.IsNullOrEmpty(dataManager.LastLoadError)
+                ? "DataManager did not finish loading game data."
+                : dataManager.LastLoadError;
+
+            Debug.LogError($"[GameManager] Cannot start because DataManager failed to load data: {reason}", this);
+            return false;
+        }
+
+        levelsData = dataManager.Levels;
+
+        if (levelsData == null)
+        {
+            Debug.LogError("[GameManager] DataManager returned null LevelsData.", this);
+            return false;
+        }
+
+        if (levelsData.levels == null)
+        {
+            Debug.LogError("[GameManager] LevelsData is present, but its 'levels' list is null.", this);
+            return false;
+        }
+
+        if (levelsData.levels.Count == 0)
+        {
+            Debug.LogError("[GameManager] LevelsData loaded successfully, but it contains 0 levels.", this);
+            return false;
+        }
+
+        Debug.Log($"[GameManager] Received level data from DataManager. Total levels: {levelsData.levels.Count}", this);
+        return true;
+    }
+
     private void Start()
     {
-        TextAsset json = Resources.Load<TextAsset>("words");
+        InitializeCurrentLevel();
 
-        if (json == null)
+        if (!TryInitializeLevelData())
         {
-            Debug.LogError("words.json not found.");
             return;
         }
 
-        wordData = JsonUtility.FromJson<WordData>(json.text);
-
-        if (wordData == null || wordData.stages.Count == 0)
-{
-    Debug.LogError("No stages found.");
-    return;
-}
-
-LoadCurrentPuzzle();
+        LoadCurrentPuzzle();
 
         if (dragLine != null)
         {
@@ -107,54 +152,91 @@ LoadCurrentPuzzle();
     //---------------------------------------------------------
 
     void LoadCurrentPuzzle()
-{
-    currentPuzzle =
-        wordData
-        .stages[currentStageIndex]
-        .puzzles[currentPuzzleIndex];
-
-        Debug.Log($"Loading Stage {currentStageIndex + 1}, Puzzle {currentPuzzleIndex + 1}");
-
-    solvedWords.Clear();
-
-    SpawnLetters();
-    SpawnSlots();
-
-    UpdatePuzzleCounter();
-}
-    void UpdatePuzzleCounter()
-{
-    if (puzzleCounterText == null)
     {
-        Debug.LogError("Puzzle Counter Text is NULL");
-        return;
+        if (levelsData == null || levelsData.levels == null)
+        {
+            Debug.LogError("[GameManager] Cannot load current puzzle because level data is not available.", this);
+            return;
+        }
+
+        int savedLevel = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
+
+        if (savedLevel < 1 || savedLevel > levelsData.levels.Count)
+        {
+            Debug.LogError($"[GameManager] Saved level {savedLevel} is out of range. Valid range: 1-{levelsData.levels.Count}.", this);
+            return;
+        }
+
+        currentLevel = levelsData.levels[savedLevel - 1];
+
+        if (currentLevel == null)
+        {
+            Debug.LogError($"[GameManager] Level data at index {savedLevel - 1} is null.", this);
+            return;
+        }
+
+        Debug.Log($"[GameManager] Loading level {currentLevel.id}", this);
+
+        solvedWords.Clear();
+
+        SpawnLetters();
+        SpawnSlots();
+
+        UpdatePuzzleCounter();
     }
 
-    int totalPuzzles =
-        wordData.stages[currentStageIndex].puzzles.Count;
+    void UpdatePuzzleCounter()
+    {
+        if (puzzleCounterText == null)
+        {
+            Debug.LogError("[GameManager] Puzzle counter text is not assigned.", this);
+            return;
+        }
 
-    puzzleCounterText.text =
-        $"{currentPuzzleIndex + 1}/{totalPuzzles}";
+        if (levelsData == null || levelsData.levels == null)
+        {
+            Debug.LogError("[GameManager] Cannot update puzzle counter because level data is unavailable.", this);
+            return;
+        }
 
-    Debug.Log("Counter Updated To : " + puzzleCounterText.text);
-}
+        int currentLevelNumber = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
+        int totalLevels = levelsData.levels.Count;
+
+        puzzleCounterText.text = $"{currentLevelNumber}/{totalLevels}";
+    }
 
     void LoadNextPuzzle()
     {
-        currentPuzzleIndex++;
-         Debug.Log("Current Puzzle Index: " + currentPuzzleIndex);
-       int totalPuzzles =
-        wordData.stages[currentStageIndex].puzzles.Count;
+        if (levelsData == null || levelsData.levels == null)
+        {
+            Debug.LogError("[GameManager] Cannot load the next puzzle because level data is unavailable.", this);
+            return;
+        }
 
-    if (currentPuzzleIndex >= totalPuzzles)
-    {
-        SceneManager.LoadScene("BonusQuestionScene");
-        return;
+        int currentLevel = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
+
+        currentLevel++;
+
+        PlayerPrefs.SetInt("CURRENT_LEVEL", currentLevel);
+        PlayerPrefs.Save();
+
+        if (currentLevel > levelsData.levels.Count)
+        {
+            Debug.Log("[GameManager] Game completed.", this);
+            SceneManager.LoadScene("MainScene");
+            return;
+        }
+
+        if ((currentLevel - 1) % 2 == 0)
+        {
+            Debug.Log($"[GameManager] Level {currentLevel - 1} complete. Loading BonusQuestionScene.", this);
+            SceneManager.LoadScene("BonusQuestionScene");
+            return;
+        }
+
+        Debug.Log($"[GameManager] Advancing to level {currentLevel}. Reloading MainScene.", this);
+        SceneManager.LoadScene("MainScene");
     }
-
-        LoadCurrentPuzzle();
-    }
-
     //---------------------------------------------------------
     // LETTER WHEEL
     //---------------------------------------------------------
@@ -164,14 +246,14 @@ LoadCurrentPuzzle();
         foreach (Transform child in letterContainer)
             Destroy(child.gameObject);
 
-        int count = currentPuzzle.letters.Count;
+        int count = currentLevel.letters.Count;
 
         for (int i = 0; i < count; i++)
         {
             LetterButton button =
                 Instantiate(letterPrefab, letterContainer);
 
-            button.SetLetter(currentPuzzle.letters[i]);
+            button.SetLetter(currentLevel.letters[i]);
 
             RectTransform rect =
                 button.GetComponent<RectTransform>();
@@ -204,7 +286,7 @@ LoadCurrentPuzzle();
 
         answerSlots.Clear();
 
-        foreach (string answer in currentPuzzle.answers)
+        foreach (string answer in currentLevel.answers)
         {
             Transform row =
                 Instantiate(rowPrefab, slotContainer);
@@ -292,7 +374,7 @@ LoadCurrentPuzzle();
 
                 Debug.Log("Solved : " + currentWord);
 
-                if (solvedWords.Count == currentPuzzle.answers.Count)
+                if (solvedWords.Count == currentLevel.answers.Count)
                 {
                     Debug.Log("Puzzle Complete");
 
