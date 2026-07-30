@@ -10,7 +10,7 @@ public class LoadingController : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float loadingTime = 4f;
-    [SerializeField] private string nextScene = "PuzzleScene";
+    [SerializeField] private string nextScene = "MainScene";
 
     private float timer;
 

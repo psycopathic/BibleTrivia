@@ -1,0 +1,144 @@
+{
+  "bonusRounds": [
+    {
+      "afterLevel": 2,
+      "questions": [
+        {
+          "question": "Who built the Ark?",
+          "options": [
+            "Moses",
+            "Noah",
+            "David",
+            "Abraham"
+          ],
+          "correctAnswer": "Noah"
+        },
+        {
+          "question": "How many days did it rain?",
+          "options": [
+            "7",
+            "30",
+            "40",
+            "100"
+          ],
+          "correctAnswer": "40"
+        },
+        {
+          "question": "Which bird brought an olive leaf?",
+          "options": [
+            "Crow",
+            "Dove",
+            "Eagle",
+            "Sparrow"
+          ],
+          "correctAnswer": "Dove"
+        }
+      ]
+    },
+    {
+      "afterLevel": 4,
+      "questions": [
+        {
+          "question": "Who was thrown into the lions' den?",
+          "options": [
+            "Joseph",
+            "Daniel",
+            "Samson",
+            "Elijah"
+          ],
+          "correctAnswer": "Daniel"
+        },
+        {
+          "question": "How many lions' den visitors stayed unharmed by faith?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "12"
+          ],
+          "correctAnswer": "1"
+        },
+        {
+          "question": "Who protected Daniel in the lions' den?",
+          "options": [
+            "An angel",
+            "A soldier",
+            "The king",
+            "A shepherd"
+          ],
+          "correctAnswer": "An angel"
+        }
+      ]
+    },
+    {
+      "afterLevel": 6,
+      "questions": [
+        {
+          "question": "Who defeated Goliath?",
+          "options": [
+            "Saul",
+            "David",
+            "Jonathan",
+            "Samuel"
+          ],
+          "correctAnswer": "David"
+        },
+        {
+          "question": "What weapon did David use first?",
+          "options": [
+            "Sword",
+            "Spear",
+            "Sling",
+            "Bow"
+          ],
+          "correctAnswer": "Sling"
+        },
+        {
+          "question": "How many stones did David pick up?",
+          "options": [
+            "1",
+            "3",
+            "5",
+            "10"
+          ],
+          "correctAnswer": "5"
+        }
+      ]
+    },
+    {
+      "afterLevel": 8,
+      "questions": [
+        {
+          "question": "Who led the Israelites out of Egypt?",
+          "options": [
+            "Aaron",
+            "Moses",
+            "Joshua",
+            "Jacob"
+          ],
+          "correctAnswer": "Moses"
+        },
+        {
+          "question": "What sea was parted for the Israelites?",
+          "options": [
+            "Dead Sea",
+            "Sea of Galilee",
+            "Red Sea",
+            "Mediterranean Sea"
+          ],
+          "correctAnswer": "Red Sea"
+        },
+        {
+          "question": "What food appeared from heaven in the wilderness?",
+          "options": [
+            "Bread",
+            "Manna",
+            "Fish",
+            "Honey"
+          ],
+          "correctAnswer": "Manna"
+        }
+      ]
+    }
+  ]
+}

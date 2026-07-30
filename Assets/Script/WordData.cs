@@ -19,8 +19,9 @@ public class BonusQuestion
 [Serializable]
 public class StageData
 {
-    public BonusQuestion bonusQuestion;
+       public List<BonusQuestion> bonusQuestions;
     public List<PuzzleData> puzzles;
+
 }
 
 [Serializable]

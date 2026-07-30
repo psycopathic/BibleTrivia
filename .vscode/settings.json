@@ -67,5 +67,18 @@
         "*.sln": "*.csproj",
         "*.slnx": "*.csproj"
     },
-    "dotnet.defaultSolution": "BibleTrivia.slnx"
+    "dotnet.defaultSolution": "BibleTrivia.slnx",
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "practise",
+            "database": "practise",
+            "username": "psycopathic",
+            "password": ""
+        }
+    ]
 }
