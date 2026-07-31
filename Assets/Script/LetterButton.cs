@@ -22,19 +22,37 @@ public class LetterButton : MonoBehaviour,
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        GameManager.Instance.StartSelection(this);
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.StartSelection(this);
+        }
+        else if (DailyPuzzleManager.Instance != null)
+        {
+            DailyPuzzleManager.Instance.StartSelection(this);
+        }
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (GameManager.Instance.IsDragging)
+        if (GameManager.Instance != null && GameManager.Instance.IsDragging)
         {
             GameManager.Instance.AddLetter(this);
+        }
+        else if (DailyPuzzleManager.Instance != null && DailyPuzzleManager.Instance.IsDragging)
+        {
+            DailyPuzzleManager.Instance.AddLetter(this);
         }
     }
 
     public void OnPointerUp(PointerEventData eventData)
     {
-        GameManager.Instance.EndSelection();
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.EndSelection();
+        }
+        else if (DailyPuzzleManager.Instance != null)
+        {
+            DailyPuzzleManager.Instance.EndSelection();
+        }
     }
 }

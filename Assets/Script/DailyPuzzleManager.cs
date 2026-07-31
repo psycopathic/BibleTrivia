@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using TMPro;
 
 [DefaultExecutionOrder(-900)]
-public class GameManager : MonoBehaviour
+public class DailyPuzzleManager : MonoBehaviour
 {
-    public static GameManager Instance;
+    public static DailyPuzzleManager Instance;
 
     [Header("Prefabs")]
     [SerializeField] private LetterButton letterPrefab;
@@ -26,11 +27,18 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     [SerializeField] private TMP_Text puzzleCounterText;
 
-    // private WordData wordData;
-    // private PuzzleData currentPuzzle;
+    [Header("Calendar")]
+    [SerializeField] private TMP_Text monthText;
+    [SerializeField] private TMP_Text dayText;
+    [SerializeField]
+    private VictoryPopup victoryPopup;
 
-    private LevelsData levelsData;
+    private const string DailyQuestionsResourcePath = "Data/dailyQuestions";
+
+    private DailyQuestionData dailyData;
+    private DailyDay todayData;
     private LevelData currentLevel;
+    private int currentPuzzleIndex = 0;
 
     public bool IsDragging { get; private set; }
 
@@ -45,9 +53,6 @@ public class GameManager : MonoBehaviour
 
     private string currentWord = "";
 
-    // private int currentStageIndex = 0;
-    // private int currentPuzzleIndex = 0;
-
     private void Awake()
     {
         Instance = this;
@@ -55,51 +60,43 @@ public class GameManager : MonoBehaviour
 
     private void InitializeCurrentLevel()
     {
-        int level = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
-        Debug.Log($"[GameManager] Current level from PlayerPrefs: {level}", this);
+        Debug.Log($"[DailyPuzzleManager] Starting daily challenge at puzzle index {currentPuzzleIndex}", this);
     }
 
     private bool TryInitializeLevelData()
     {
-        DataManager dataManager = DataManager.EnsureInstance();
+        TextAsset json = Resources.Load<TextAsset>(DailyQuestionsResourcePath);
 
-        if (dataManager == null)
+        if (json == null)
         {
-            Debug.LogError("[GameManager] DataManager could not be created or found.", this);
+            Debug.LogError($"[DailyPuzzleManager] Could not find Resources/{DailyQuestionsResourcePath}.json", this);
             return false;
         }
 
-        if (!dataManager.IsDataLoaded)
-        {
-            string reason = string.IsNullOrEmpty(dataManager.LastLoadError)
-                ? "DataManager did not finish loading game data."
-                : dataManager.LastLoadError;
+        dailyData = JsonUtility.FromJson<DailyQuestionData>(json.text);
 
-            Debug.LogError($"[GameManager] Cannot start because DataManager failed to load data: {reason}", this);
+        if (dailyData == null || dailyData.days == null)
+        {
+            Debug.LogError("[DailyPuzzleManager] Failed to parse dailyQuestions.json or 'days' is missing.", this);
             return false;
         }
 
-        levelsData = dataManager.Levels;
+        string today = DateTime.Now.ToString("yyyy-MM-dd");
+        todayData = dailyData.days.Find(day => day.date == today);
 
-        if (levelsData == null)
+        if (todayData == null)
         {
-            Debug.LogError("[GameManager] DataManager returned null LevelsData.", this);
+            Debug.LogError("No Daily Challenge Found", this);
             return false;
         }
 
-        if (levelsData.levels == null)
+        if (todayData.levels == null || todayData.levels.Count == 0)
         {
-            Debug.LogError("[GameManager] LevelsData is present, but its 'levels' list is null.", this);
+            Debug.LogError($"[DailyPuzzleManager] Daily challenge for {today} has no levels.", this);
             return false;
         }
 
-        if (levelsData.levels.Count == 0)
-        {
-            Debug.LogError("[GameManager] LevelsData loaded successfully, but it contains 0 levels.", this);
-            return false;
-        }
-
-        Debug.Log($"[GameManager] Received level data from DataManager. Total levels: {levelsData.levels.Count}", this);
+        Debug.Log($"[DailyPuzzleManager] Loaded daily challenge for {today} with {todayData.levels.Count} levels.", this);
         return true;
     }
 
@@ -111,7 +108,8 @@ public class GameManager : MonoBehaviour
         {
             return;
         }
-
+        
+        UpdateCalendar();
         LoadCurrentPuzzle();
 
         if (dragLine != null)
@@ -147,35 +145,45 @@ public class GameManager : MonoBehaviour
         dragLine.SetPosition(selectedLetters.Count, world);
     }
 
+    private void UpdateCalendar()
+   {
+    DateTime today = DateTime.Now;
+
+    monthText.text = today.ToString("MMM").ToUpper(); // JAN, FEB, MAR...
+    dayText.text = today.Day.ToString();              // 1, 2, 3 ... 31
+   }
+   
+   private void ReturnToMainScene()
+    {
+    SceneManager.LoadScene("MainScene");
+    }
     //---------------------------------------------------------
     // PUZZLE LOADING
     //---------------------------------------------------------
 
     void LoadCurrentPuzzle()
     {
-        if (levelsData == null || levelsData.levels == null)
+        if (todayData == null || todayData.levels == null)
         {
-            Debug.LogError("[GameManager] Cannot load current puzzle because level data is not available.", this);
+            Debug.LogError("[DailyPuzzleManager] Cannot load daily puzzle because today's data is unavailable.", this);
             return;
         }
 
-        int savedLevel = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
-
-        if (savedLevel < 1 || savedLevel > levelsData.levels.Count)
+        if (currentPuzzleIndex < 0 || currentPuzzleIndex >= todayData.levels.Count)
         {
-            Debug.LogError($"[GameManager] Saved level {savedLevel} is out of range. Valid range: 1-{levelsData.levels.Count}.", this);
+            Debug.LogError($"[DailyPuzzleManager] Daily puzzle index {currentPuzzleIndex} is out of range.", this);
             return;
         }
 
-        currentLevel = levelsData.levels[savedLevel - 1];
+        currentLevel = todayData.levels[currentPuzzleIndex];
 
         if (currentLevel == null)
         {
-            Debug.LogError($"[GameManager] Level data at index {savedLevel - 1} is null.", this);
+            Debug.LogError($"[DailyPuzzleManager] Daily level data at index {currentPuzzleIndex} is null.", this);
             return;
         }
 
-        Debug.Log($"[GameManager] Loading level {currentLevel.id}", this);
+        Debug.Log($"[DailyPuzzleManager] Loading daily puzzle {currentPuzzleIndex + 1}/{todayData.levels.Count} (level id {currentLevel.id})", this);
 
         solvedWords.Clear();
 
@@ -189,54 +197,40 @@ public class GameManager : MonoBehaviour
     {
         if (puzzleCounterText == null)
         {
-            Debug.LogError("[GameManager] Puzzle counter text is not assigned.", this);
+            Debug.LogError("[DailyPuzzleManager] Puzzle counter text is not assigned.", this);
             return;
         }
 
-        if (levelsData == null || levelsData.levels == null)
+        if (todayData == null || todayData.levels == null)
         {
-            Debug.LogError("[GameManager] Cannot update puzzle counter because level data is unavailable.", this);
+            Debug.LogError("[DailyPuzzleManager] Cannot update puzzle counter because daily data is unavailable.", this);
             return;
         }
 
-        int currentLevelNumber = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
-        int totalLevels = levelsData.levels.Count;
-
-        puzzleCounterText.text = $"{currentLevelNumber}/{totalLevels}";
+        puzzleCounterText.text = $"{currentPuzzleIndex + 1}/{todayData.levels.Count}";
     }
 
     void LoadNextPuzzle()
     {
-        if (levelsData == null || levelsData.levels == null)
+        if (todayData == null || todayData.levels == null)
         {
-            Debug.LogError("[GameManager] Cannot load the next puzzle because level data is unavailable.", this);
+            Debug.LogError("[DailyPuzzleManager] Cannot load the next daily puzzle because daily data is unavailable.", this);
             return;
         }
 
-        int currentLevel = PlayerPrefs.GetInt("CURRENT_LEVEL", 1);
+        currentPuzzleIndex++;
 
-        currentLevel++;
-
-        PlayerPrefs.SetInt("CURRENT_LEVEL", currentLevel);
-        PlayerPrefs.Save();
-
-        if (currentLevel > levelsData.levels.Count)
+        if (currentPuzzleIndex >= todayData.levels.Count)
         {
-            Debug.Log("[GameManager] Game completed.", this);
-            SceneManager.LoadScene("MainScene");
+            victoryPopup.Show();
+             Invoke(nameof(ReturnToMainScene), 5f);
             return;
         }
 
-        if ((currentLevel - 1) % 2 == 0)
-        {
-            Debug.Log($"[GameManager] Level {currentLevel - 1} complete. Loading BonusQuestionScene.", this);
-            SceneManager.LoadScene("BonusQuestionScene");
-            return;
-        }
-
-        Debug.Log($"[GameManager] Advancing to level {currentLevel}. Reloading MainScene.", this);
-        SceneManager.LoadScene("MainScene");
+        Debug.Log($"[DailyPuzzleManager] Advancing to daily puzzle {currentPuzzleIndex + 1}/{todayData.levels.Count}.", this);
+        LoadCurrentPuzzle();
     }
+
     //---------------------------------------------------------
     // LETTER WHEEL
     //---------------------------------------------------------
@@ -377,7 +371,7 @@ public class GameManager : MonoBehaviour
                 if (solvedWords.Count == currentLevel.answers.Count)
                 {
                     Debug.Log("Puzzle Complete");
-                    CoinManager.Instance.AddCoins(CoinConstants.LevelReward);
+
                     Invoke(nameof(LoadNextPuzzle), 1f);
                 }
             }
@@ -392,29 +386,4 @@ public class GameManager : MonoBehaviour
             dragLine.enabled = false;
         }
     }
-    public void RevealHint()
-{
-    foreach (var pair in answerSlots)
-    {
-        string answer = pair.Key;
-        List<Slot> slots = pair.Value;
-
-        // Skip already solved words
-        if (solvedWords.Contains(answer))
-            continue;
-
-        // Reveal the first empty letter
-        for (int i = 0; i < answer.Length; i++)
-        {
-            if (!slots[i].IsFilled)
-            {
-                slots[i].SetLetter(answer[i].ToString());
-
-                Debug.Log($"Hint revealed: {answer[i]}");
-
-                return;
-            }
-        }
-    }
-}
 }

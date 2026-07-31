@@ -7,6 +7,8 @@ public class Slot : MonoBehaviour
     [SerializeField] private Image filledBackground;
     [SerializeField] private TMP_Text letterText;
 
+    public bool IsFilled => !string.IsNullOrEmpty(letterText.text);
+
     private void Awake()
     {
         Clear();
@@ -22,7 +24,6 @@ public class Slot : MonoBehaviour
 
     public void Clear()
     {
-        Debug.Log($"Filled={filledBackground}, Text={letterText}");
         filledBackground.gameObject.SetActive(false);
 
         letterText.text = "";
