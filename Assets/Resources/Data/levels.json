@@ -24,6 +24,81 @@
       "id": 5,
       "letters": ["P","R","A","Y","E","R"],
       "answers": ["PRAYER","REPAY"]
+    },
+    {
+      "id": 6,
+      "letters": ["B","I","B","L","E","S"],
+      "answers": ["BIBLES","BIBLE"]
+    },
+    {
+      "id": 7,
+      "letters": ["C","R","O","S","S","W"],
+      "answers": ["CROW","CROSS"]
+    },
+    {
+      "id": 8,
+      "letters": ["G","O","D","L","E","V"],
+      "answers": ["GOD","GLOVE"]
+    },
+    {
+      "id": 9,
+      "letters": ["F","A","I","T","H","S"],
+      "answers": ["FAITHS","FISH"]
+    },
+    {
+      "id": 10,
+      "letters": ["P","R","A","Y","E","R"],
+      "answers": ["PRAYER"]
+    },
+    {
+      "id": 11,
+      "letters": ["A","N","G","E","L","S"],
+      "answers": ["ANGELS","ANGEL","ANGLE"]
+    },
+    {
+      "id": 12,
+      "letters": ["H","E","A","V","E","N"],
+      "answers": ["HEAVEN","HAVE","EVEN"]
+    },
+    {
+      "id": 13,
+      "letters": ["J","E","S","U","S","R"],
+      "answers": ["JESUS","USER"]
+    },
+    {
+      "id": 14,
+      "letters": ["M","O","S","E","S","S"],
+      "answers": ["MOSES","SOME"]
+    },
+    {
+      "id": 15,
+      "letters": ["D","A","V","I","D","S"],
+      "answers": ["DAVID","SAID"]
+    },
+    {
+      "id": 16,
+      "letters": ["I","S","R","A","E","L"],
+      "answers": ["ISRAEL","RAISE","LIAR"]
+    },
+    {
+      "id": 17,
+      "letters": ["S","P","I","R","I","T"],
+      "answers": ["SPIRIT","TRIP","RIPS"]
+    },
+    {
+      "id": 18,
+      "letters": ["C","H","U","R","C","H"],
+      "answers": ["CHURCH","CURB"]
+    },
+    {
+      "id": 19,
+      "letters": ["G","O","S","P","E","L"],
+      "answers": ["GOSPEL","SLOPE","LOSE"]
+    },
+    {
+      "id": 20,
+      "letters": ["M","I","R","A","C","L","E"],
+      "answers": ["MIRACLE","CLAIM","LAIR"]
     }
   ]
 }

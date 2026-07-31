@@ -21,6 +21,6 @@ public class MainSceneManager : MonoBehaviour
     public void PlayDailyChallenge()
     {
         GameSession.CurrentMode = GameMode.DailyChallenge;
-        SceneManager.LoadScene("PuzzleScene");
+        SceneManager.LoadScene("DailyPuzzleScene");
     }
 }
