@@ -40,6 +40,9 @@ public class GameManager : MonoBehaviour
     private List<LetterButton> selectedLetters =
         new List<LetterButton>();
 
+    private List<LetterButton> letterButtons = new();
+    private List<Vector2> letterPositions = new();
+
     private HashSet<string> solvedWords =
         new HashSet<string>();
 
@@ -245,6 +248,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (Transform child in letterContainer)
             Destroy(child.gameObject);
+             letterButtons.Clear();
+             letterPositions.Clear();
 
         int count = currentLevel.letters.Count;
 
@@ -252,6 +257,8 @@ public class GameManager : MonoBehaviour
         {
             LetterButton button =
                 Instantiate(letterPrefab, letterContainer);
+
+                letterButtons.Add(button);
 
             button.SetLetter(currentLevel.letters[i]);
 
@@ -272,6 +279,8 @@ public class GameManager : MonoBehaviour
                     Mathf.Cos(angle),
                     Mathf.Sin(angle)
                 ) * wheelRadius;
+
+                letterPositions.Add(rect.anchoredPosition);
         }
     }
 
@@ -392,8 +401,34 @@ public class GameManager : MonoBehaviour
             dragLine.enabled = false;
         }
     }
-    public void RevealHint()
+
+
+    public void ShuffleLetters()
 {
+    if (IsDragging)
+        return;
+
+    List<Vector2> shuffled = new List<Vector2>(letterPositions);
+
+    // Fisher-Yates shuffle
+    for (int i = shuffled.Count - 1; i > 0; i--)
+    {
+        int random = Random.Range(0, i + 1);
+
+        Vector2 temp = shuffled[i];
+        shuffled[i] = shuffled[random];
+        shuffled[random] = temp;
+    }
+
+    for (int i = 0; i < letterButtons.Count; i++)
+    {
+        RectTransform rect = letterButtons[i].GetComponent<RectTransform>();
+        rect.anchoredPosition = shuffled[i];
+    }
+}
+
+    public void RevealHint()
+  {
     foreach (var pair in answerSlots)
     {
         string answer = pair.Key;
@@ -416,5 +451,5 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-}
+  }
 }
