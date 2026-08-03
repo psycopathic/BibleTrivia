@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -19,6 +20,7 @@ public class GameManager : MonoBehaviour
 
     [Header("Letter Wheel")]
     [SerializeField] private float wheelRadius = 190f;
+    [SerializeField] private float shuffleDuration = 0.25f;
 
     [Header("Drag Line")]
     [SerializeField] private LineRenderer dragLine;
@@ -33,12 +35,17 @@ public class GameManager : MonoBehaviour
     private LevelData currentLevel;
 
     public bool IsDragging { get; private set; }
+    private bool isShuffleAnimating;
+    private Coroutine shuffleCoroutine;
 
     private Dictionary<string, List<Slot>> answerSlots =
         new Dictionary<string, List<Slot>>();
 
     private List<LetterButton> selectedLetters =
         new List<LetterButton>();
+
+    private List<LetterButton> letterButtons = new();
+    private List<Vector2> letterPositions = new();
 
     private HashSet<string> solvedWords =
         new HashSet<string>();
@@ -177,6 +184,7 @@ public class GameManager : MonoBehaviour
 
         Debug.Log($"[GameManager] Loading level {currentLevel.id}", this);
 
+        ResetInteractionState();
         solvedWords.Clear();
 
         SpawnLetters();
@@ -245,6 +253,8 @@ public class GameManager : MonoBehaviour
     {
         foreach (Transform child in letterContainer)
             Destroy(child.gameObject);
+             letterButtons.Clear();
+             letterPositions.Clear();
 
         int count = currentLevel.letters.Count;
 
@@ -252,6 +262,8 @@ public class GameManager : MonoBehaviour
         {
             LetterButton button =
                 Instantiate(letterPrefab, letterContainer);
+
+                letterButtons.Add(button);
 
             button.SetLetter(currentLevel.letters[i]);
 
@@ -272,6 +284,8 @@ public class GameManager : MonoBehaviour
                     Mathf.Cos(angle),
                     Mathf.Sin(angle)
                 ) * wheelRadius;
+
+                letterPositions.Add(rect.anchoredPosition);
         }
     }
 
@@ -315,6 +329,9 @@ public class GameManager : MonoBehaviour
 
     public void StartSelection(LetterButton button)
     {
+        if (isShuffleAnimating)
+            return;
+
         IsDragging = true;
 
         currentWord = "";
@@ -373,13 +390,7 @@ public class GameManager : MonoBehaviour
                 }
 
                 Debug.Log("Solved : " + currentWord);
-
-                if (solvedWords.Count == currentLevel.answers.Count)
-                {
-                    Debug.Log("Puzzle Complete");
-                    CoinManager.Instance.AddCoins(CoinConstants.LevelReward);
-                    Invoke(nameof(LoadNextPuzzle), 1f);
-                }
+                HandlePuzzleCompletion();
             }
         }
 
@@ -392,29 +403,154 @@ public class GameManager : MonoBehaviour
             dragLine.enabled = false;
         }
     }
-    public void RevealHint()
-{
-    foreach (var pair in answerSlots)
+
+
+    public void ShuffleLetters()
     {
-        string answer = pair.Key;
-        List<Slot> slots = pair.Value;
+        if (IsDragging || isShuffleAnimating || letterButtons.Count <= 1)
+            return;
 
-        // Skip already solved words
-        if (solvedWords.Contains(answer))
-            continue;
+        List<Vector2> shuffled = new List<Vector2>(letterPositions);
 
-        // Reveal the first empty letter
-        for (int i = 0; i < answer.Length; i++)
+        // Fisher-Yates shuffle
+        for (int i = shuffled.Count - 1; i > 0; i--)
         {
-            if (!slots[i].IsFilled)
+            int random = Random.Range(0, i + 1);
+
+            Vector2 temp = shuffled[i];
+            shuffled[i] = shuffled[random];
+            shuffled[random] = temp;
+        }
+
+        if (shuffleCoroutine != null)
+            StopCoroutine(shuffleCoroutine);
+
+        shuffleCoroutine = StartCoroutine(AnimateShuffle(shuffled));
+    }
+
+    private IEnumerator AnimateShuffle(List<Vector2> targetPositions)
+    {
+        isShuffleAnimating = true;
+
+        List<RectTransform> rectTransforms = new List<RectTransform>(letterButtons.Count);
+        List<Vector2> startPositions = new List<Vector2>(letterButtons.Count);
+
+        for (int i = 0; i < letterButtons.Count; i++)
+        {
+            RectTransform rect = letterButtons[i].GetComponent<RectTransform>();
+            rectTransforms.Add(rect);
+            startPositions.Add(rect.anchoredPosition);
+        }
+
+        float elapsed = 0f;
+
+        while (elapsed < shuffleDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / shuffleDuration);
+            float easedT = 1f - (1f - t) * (1f - t);
+
+            for (int i = 0; i < rectTransforms.Count; i++)
             {
-                slots[i].SetLetter(answer[i].ToString());
-
-                Debug.Log($"Hint revealed: {answer[i]}");
-
-                return;
+                rectTransforms[i].anchoredPosition = Vector2.LerpUnclamped(
+                    startPositions[i],
+                    targetPositions[i],
+                    easedT
+                );
             }
+
+            yield return null;
+        }
+
+        for (int i = 0; i < rectTransforms.Count; i++)
+            rectTransforms[i].anchoredPosition = targetPositions[i];
+
+        isShuffleAnimating = false;
+        shuffleCoroutine = null;
+    }
+
+    public void RevealHint()
+    {
+        foreach (var pair in answerSlots)
+        {
+            string answer = pair.Key;
+            List<Slot> slots = pair.Value;
+
+            if (solvedWords.Contains(answer))
+                continue;
+
+            for (int i = 0; i < answer.Length; i++)
+            {
+                if (!slots[i].IsFilled)
+                {
+                    slots[i].SetLetter(answer[i].ToString());
+                    Debug.Log($"Hint revealed: {answer[i]}");
+
+                    if (TryMarkWordSolved(answer, slots))
+                        HandlePuzzleCompletion();
+
+                    return;
+                }
+            }
+
+            
         }
     }
-}
+
+    private void ResetInteractionState()
+    {
+        IsDragging = false;
+        currentWord = "";
+        selectedLetters.Clear();
+
+        if (shuffleCoroutine != null)
+        {
+            StopCoroutine(shuffleCoroutine);
+            shuffleCoroutine = null;
+        }
+
+        isShuffleAnimating = false;
+
+        if (dragLine != null)
+        {
+            dragLine.positionCount = 0;
+            dragLine.enabled = false;
+        }
+    }
+
+    private bool TryMarkWordSolved(string answer, List<Slot> slots)
+    {
+        if (solvedWords.Contains(answer))
+            return false;
+
+        for (int i = 0; i < slots.Count; i++)
+        {
+            if (!slots[i].IsFilled)
+                return false;
+        }
+
+        solvedWords.Add(answer);
+        Debug.Log("Solved : " + answer);
+        return true;
+    }
+
+    private void HandlePuzzleCompletion()
+    {
+        if (solvedWords.Count != currentLevel.answers.Count)
+            return;
+
+        Debug.Log("Puzzle Complete");
+
+        if (CoinManager.Instance != null)
+        {
+            CoinManager.Instance.AddCoins(CoinConstants.LevelReward);
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] CoinManager is missing. Skipping coin reward but continuing puzzle flow.", this);
+        }
+
+        CancelInvoke(nameof(LoadNextPuzzle));
+        Invoke(nameof(LoadNextPuzzle), 1f);
+    }
 }
