@@ -15,4 +15,5 @@ UserSettings/
 *.booproj
 *.svd
 APK_REPLICATION_DOC.md
-# *.apk
+*.apk
+*.zip
