@@ -1,45 +1,61 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
+
 public class CoinManager : MonoBehaviour
 {
     [SerializeField] private TMP_Text coinText;
+
     public static CoinManager Instance;
 
     private const string CoinKey = "Coins";
     private int coins;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+    private static void AutoInitialize()
+    {
+        EnsureInstance();
+    }
+
+    public static CoinManager EnsureInstance()
+    {
+        if (Instance != null)
+        {
+            return Instance;
+        }
+
+        Instance = FindAnyObjectByType<CoinManager>();
+        if (Instance != null)
+        {
+            return Instance;
+        }
+
+        GameObject coinManagerObject = new GameObject("CoinManager");
+        Instance = coinManagerObject.AddComponent<CoinManager>();
+        Debug.Log("[CoinManager] Auto-created runtime instance.", Instance);
+        return Instance;
+    }
+
     private void Awake()
     {
-        // Singleton
-        if (Instance == null)
+        if (Instance != null && Instance != this)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-
-            // Load saved coins
-            coins = PlayerPrefs.GetInt(CoinKey, 100);
-        }
-        else
-        {
+            Debug.LogWarning("[CoinManager] Duplicate instance found. Destroying the new instance.", this);
             Destroy(gameObject);
+            return;
         }
-    }
-    
-    private void Start()
-   {
-     ;
-   }
-   public void SetCoinText(TMP_Text text)
-{
-    coinText = text;
-    UpdateUI();
-}
 
-private void UpdateUI()
-{
-    if (coinText != null)
-        coinText.text = coins.ToString();
-}
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        coins = PlayerPrefs.GetInt(CoinKey, 100);
+        UpdateUI();
+    }
+
+    public void SetCoinText(TMP_Text text)
+    {
+        coinText = text;
+        UpdateUI();
+    }
+
     public int GetCoins()
     {
         return coins;
@@ -54,18 +70,27 @@ private void UpdateUI()
     public bool SpendCoins(int amount)
     {
         if (coins < amount)
+        {
             return false;
+        }
 
         coins -= amount;
         SaveCoins();
         return true;
     }
 
-    private void SaveCoins()
-{
-    PlayerPrefs.SetInt(CoinKey, coins);
-    PlayerPrefs.Save();
+    private void UpdateUI()
+    {
+        if (coinText != null)
+        {
+            coinText.text = coins.ToString();
+        }
+    }
 
-    UpdateUI();
-}
+    private void SaveCoins()
+    {
+        PlayerPrefs.SetInt(CoinKey, coins);
+        PlayerPrefs.Save();
+        UpdateUI();
+    }
 }
