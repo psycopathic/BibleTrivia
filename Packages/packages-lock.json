@@ -1,5 +1,15 @@
 {
   "dependencies": {
+    "com.jest.sdk": {
+      "version": "https://github.com/jest-com/jest-unity-sdk.git",
+      "depth": 0,
+      "source": "git",
+      "dependencies": {
+        "com.unity.modules.imageconversion": "1.0.0",
+        "com.unity.nuget.newtonsoft-json": "3.2.1"
+      },
+      "hash": "ab5d54bc17b3bab8ca03709b9ad32cc910edcde4"
+    },
     "com.unity.2d.animation": {
       "version": "15.1.0",
       "depth": 0,
@@ -177,6 +187,13 @@
     "com.unity.nuget.mono-cecil": {
       "version": "1.11.6",
       "depth": 2,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.nuget.newtonsoft-json": {
+      "version": "3.2.1",
+      "depth": 0,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
