@@ -139,6 +139,111 @@
           "correctAnswer": "Manna"
         }
       ]
+    },
+    {
+      "afterLevel": 10,
+      "questions": [
+        {
+          "question": "Who was swallowed by a great fish?",
+          "options": [
+            "Jonah",
+            "Elijah",
+            "Isaiah",
+            "Jeremiah"
+          ],
+          "correctAnswer": "Jonah"
+        },
+        {
+          "question": "How many days was Jonah in the belly of the fish?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "correctAnswer": "3"
+        },
+        {
+          "question": "What city did Jonah go to preach repentance?",
+          "options": [
+            "Nineveh",
+            "Babylon",
+            "Jericho",
+            "Damascus"
+          ],
+          "correctAnswer": "Nineveh"
+        }
+      ]
+    },
+    {
+      "afterLevel": 12,
+      "questions": [
+        {
+          "question": "Who was the first king of Israel?",
+          "options": [
+            "Saul",
+            "David",
+            "Solomon",
+            "Samuel"
+          ],
+          "correctAnswer": "Saul"
+        },
+        {
+          "question": "Who built the first temple in Jerusalem?",
+          "options": [            
+            "Solomon",            
+            "David",
+            "Saul",
+            "Abraham"
+          ],
+          "correctAnswer": "Solomon"
+        },
+        {
+          "question": "How many priests did Solomon have?",
+          "options": [
+            "1",
+            "2",
+            "3",
+            "4"
+          ],
+          "correctAnswer": "4"
+        }
+      ]
+    },
+    {
+      "afterLevel": 14,
+      "questions": [
+        {
+          "question": "Who was the mother of Jesus?",
+          "options": [
+            "Mary",
+            "Elizabeth",
+            "Martha",
+            "Anna"
+          ],
+          "correctAnswer": "Mary"
+        },
+        {
+          "question": "Where was Jesus born?",
+          "options": [
+            "Nazareth",
+            "Bethlehem",
+            "Jerusalem",
+            "Capernaum"
+          ],
+          "correctAnswer": "Bethlehem"
+        },
+        { 
+          "question": "Who baptized Jesus?",
+          "options": [
+            "John the Baptist",
+            "Peter",
+            "Paul",
+            "James"
+          ],
+          "correctAnswer": "John the Baptist"
+        }
+      ]
     }
   ]
 }
