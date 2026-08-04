@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 [DefaultExecutionOrder(-900)]
@@ -25,6 +26,9 @@ public class DailyPuzzleManager : MonoBehaviour
 
     [Header("Drag Line")]
     [SerializeField] private LineRenderer dragLine;
+    [SerializeField] private float dragLineWidth = 0.18f;
+    [SerializeField] private Color dragLineColor = new Color(1f, 1f, 1f, 0.75f);
+    [SerializeField] private int dragLineSortingOrder = 100;
 
     [Header("UI")]
     [SerializeField] private TMP_Text puzzleCounterText;
@@ -77,6 +81,7 @@ public class DailyPuzzleManager : MonoBehaviour
 
     private void InitializeCurrentLevel()
     {
+        currentPuzzleIndex = DailyChallengeProgress.CurrentQuestionIndex;
         Debug.Log($"[DailyPuzzleManager] Starting daily challenge at puzzle index {currentPuzzleIndex}", this);
     }
 
@@ -131,8 +136,8 @@ public class DailyPuzzleManager : MonoBehaviour
 
         if (dragLine != null)
         {
-            dragLine.positionCount = 0;
-            dragLine.enabled = false;
+            ConfigureDragLine();
+            ClearDragLine();
         }
     }
 
@@ -151,15 +156,10 @@ public class DailyPuzzleManager : MonoBehaviour
 
         for (int i = 0; i < selectedLetters.Count; i++)
         {
-            dragLine.SetPosition(i, selectedLetters[i].transform.position);
+            dragLine.SetPosition(i, GetLetterWorldPosition(selectedLetters[i]));
         }
 
-        Vector3 mouse = Input.mousePosition;
-        mouse.z = 10f;
-
-        Vector3 world = Camera.main.ScreenToWorldPoint(mouse);
-
-        dragLine.SetPosition(selectedLetters.Count, world);
+        dragLine.SetPosition(selectedLetters.Count, GetPointerWorldPosition());
     }
 
     private void UpdateCalendar()
@@ -189,6 +189,39 @@ public class DailyPuzzleManager : MonoBehaviour
         returnToMainSceneCoroutine = null;
         ReturnToMainScene();
     }
+
+    public void ShowDailyVictoryAndReturnHome()
+    {
+        if (returnToMainSceneCoroutine != null)
+        {
+            StopCoroutine(returnToMainSceneCoroutine);
+        }
+
+        returnToMainSceneCoroutine = StartCoroutine(ShowDailyVictoryAndReturnHomeRoutine());
+    }
+
+    private IEnumerator ShowDailyVictoryAndReturnHomeRoutine()
+    {
+        AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync("DailyBetweenProgress");
+        if (unloadOperation != null)
+        {
+            yield return unloadOperation;
+        }
+
+        if (victoryPopup == null)
+        {
+            Debug.LogError("[DailyPuzzleManager] Victory popup is not assigned.", this);
+            returnToMainSceneCoroutine = null;
+            ReturnToMainScene();
+            yield break;
+        }
+
+        victoryPopup.Show();
+        yield return new WaitForSeconds(victoryPopup.ShowDuration + 1f);
+
+        returnToMainSceneCoroutine = null;
+        ReturnToMainScene();
+    }
     //---------------------------------------------------------
     // PUZZLE LOADING
     //---------------------------------------------------------
@@ -200,6 +233,8 @@ public class DailyPuzzleManager : MonoBehaviour
             Debug.LogError("[DailyPuzzleManager] Cannot load daily puzzle because today's data is unavailable.", this);
             return;
         }
+
+        currentPuzzleIndex = DailyChallengeProgress.CurrentQuestionIndex;
 
         if (currentPuzzleIndex < 0 || currentPuzzleIndex >= todayData.levels.Count)
         {
@@ -364,8 +399,9 @@ public class DailyPuzzleManager : MonoBehaviour
 
         if (dragLine != null)
         {
-            dragLine.positionCount = 0;
+            ConfigureDragLine();
             dragLine.enabled = true;
+            dragLine.positionCount = 0;
         }
 
         AddLetter(button);
@@ -389,7 +425,7 @@ public class DailyPuzzleManager : MonoBehaviour
 
             for (int i = 0; i < selectedLetters.Count; i++)
             {
-                dragLine.SetPosition(i, selectedLetters[i].transform.position);
+                dragLine.SetPosition(i, GetLetterWorldPosition(selectedLetters[i]));
             }
         }
 
@@ -423,8 +459,7 @@ public class DailyPuzzleManager : MonoBehaviour
 
         if (dragLine != null)
         {
-            dragLine.positionCount = 0;
-            dragLine.enabled = false;
+            ClearDragLine();
         }
     }
 
@@ -533,11 +568,80 @@ public class DailyPuzzleManager : MonoBehaviour
 
         if (dragLine != null)
         {
-            dragLine.positionCount = 0;
-            dragLine.enabled = false;
+            ClearDragLine();
         }
 
         CancelInvoke(nameof(LoadNextPuzzle));
+    }
+
+    private void ConfigureDragLine()
+    {
+        dragLine.useWorldSpace = true;
+        dragLine.startWidth = dragLineWidth;
+        dragLine.endWidth = dragLineWidth;
+        dragLine.startColor = dragLineColor;
+        dragLine.endColor = dragLineColor;
+        dragLine.numCapVertices = 8;
+        dragLine.numCornerVertices = 8;
+        dragLine.alignment = LineAlignment.View;
+        dragLine.textureMode = LineTextureMode.Stretch;
+        dragLine.sortingOrder = dragLineSortingOrder;
+    }
+
+    private void ClearDragLine()
+    {
+        dragLine.positionCount = 0;
+        dragLine.enabled = false;
+    }
+
+    private Vector3 GetPointerWorldPosition()
+    {
+        Camera mainCamera = Camera.main;
+
+        if (mainCamera == null)
+            return dragLine.transform.position;
+
+        return ScreenToLineWorldPosition(GetPointerScreenPosition(), mainCamera);
+    }
+
+    private Vector3 GetLetterWorldPosition(LetterButton button)
+    {
+        Camera mainCamera = Camera.main;
+
+        if (mainCamera == null)
+            return dragLine.transform.position;
+
+        RectTransform rectTransform = button.GetComponent<RectTransform>();
+
+        if (rectTransform == null)
+            return button.transform.position;
+
+        Camera canvasCamera = null;
+        Canvas canvas = button.GetComponentInParent<Canvas>();
+
+        if (canvas != null && canvas.renderMode != RenderMode.ScreenSpaceOverlay)
+            canvasCamera = canvas.worldCamera != null ? canvas.worldCamera : mainCamera;
+
+        Vector2 screenPosition = RectTransformUtility.WorldToScreenPoint(canvasCamera, rectTransform.position);
+        return ScreenToLineWorldPosition(screenPosition, mainCamera);
+    }
+
+    private Vector3 ScreenToLineWorldPosition(Vector2 screenPosition, Camera mainCamera)
+    {
+        Vector3 worldPosition = screenPosition;
+        worldPosition.z = Mathf.Abs(mainCamera.transform.position.z - dragLine.transform.position.z);
+        return mainCamera.ScreenToWorldPoint(worldPosition);
+    }
+
+    private Vector3 GetPointerScreenPosition()
+    {
+        if (Touchscreen.current != null && Touchscreen.current.primaryTouch.press.isPressed)
+            return Touchscreen.current.primaryTouch.position.ReadValue();
+
+        if (Mouse.current != null)
+            return Mouse.current.position.ReadValue();
+
+        return Vector3.zero;
     }
 
     private bool TryMarkWordSolved(string answer, List<Slot> slots)
@@ -563,16 +667,11 @@ public class DailyPuzzleManager : MonoBehaviour
 
         Debug.Log("Puzzle Complete");
 
-        if (CoinManager.Instance != null)
-        {
-            CoinManager.Instance.AddCoins(CoinConstants.LevelReward);
-        }
-        else
-        {
-            Debug.LogWarning("[DailyPuzzleManager] CoinManager is missing. Skipping coin reward but continuing puzzle flow.", this);
-        }
+        int completedCount = currentPuzzleIndex + 1;
+        DailyChallengeProgress.MarkQuestionCompleted(completedCount);
+        DailyChallengeSession.SetReward(completedCount);
 
         CancelInvoke(nameof(LoadNextPuzzle));
-        Invoke(nameof(LoadNextPuzzle), 1f);
+        SceneManager.LoadScene("DailyBetweenProgress", LoadSceneMode.Additive);
     }
 }

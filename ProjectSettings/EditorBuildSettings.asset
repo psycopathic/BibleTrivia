@@ -15,6 +15,12 @@ EditorBuildSettings:
     path: Assets/Scenes/DailyPuzzleScene.unity
     guid: b05395384632dd6dd82a50edbf8771aa
   - enabled: 1
+    path: Assets/Scenes/DailyBetweenProgress.unity
+    guid: 5cd803a27384e329684845d0356c17c4
+  - enabled: 1
+    path: Assets/Scenes/VictoryScene.unity
+    guid: 61d6ebb9ea46c07fc9baa86ed826b418
+  - enabled: 1
     path: Assets/Scenes/PuzzleScene.unity
     guid: 9a3b9e284833a2f73aa7f2101f151762
   - enabled: 1
